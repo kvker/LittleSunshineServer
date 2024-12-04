@@ -2,9 +2,9 @@ const OpenAI = require('openai')
 const zhLocale = require('../locales/zh')
 const enLocale = require('../locales/en')
 
-openaiConfig = {
-  apiKey: process.env.OPENAI_API_KEY_PROXY,
-  baseURL: process.env.OPENAI_BASE_URL_PROXY
+const openaiConfig = {
+  apiKey: process.env.TONGYI_API_KEY,
+  baseURL: process.env.TONGYI_BASE_URL
 }
 
 const openai = new OpenAI(openaiConfig)
@@ -32,7 +32,7 @@ const openai = new OpenAI(openaiConfig)
  * }
  */
 
-exports.onCheckContent = async function onCheckContent(content, locale = 'en') {
+exports.onCheckContent = async function onCheckContent(content, locale = 'zh') {
   // 获取对应的语言配置
   const locales = {
     zh: zhLocale,
@@ -41,6 +41,8 @@ exports.onCheckContent = async function onCheckContent(content, locale = 'en') {
 
   // 根据语言获取对应的提示语
   const getSystemPrompt = (locale) => {
+    return '你是一个内容审核助手，专门判断内容是否积极向上。如果内容积极向上，返回 true，否则返回 false。'
+
     if (locale === 'zh') {
       return '你是一个内容审核助手，专门判断内容是否积极向上。如果内容积极向上，返回 true，否则返回 false。'
     }
@@ -49,13 +51,13 @@ exports.onCheckContent = async function onCheckContent(content, locale = 'en') {
 
   // 获取错误信息
   const getErrorMessage = (locale) => {
-    const currentLocale = locales[locale] || locales.en
+    const currentLocale = locales[locale] || locales.zh
     return currentLocale.comment.error.notPositive
   }
 
   try {
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'qwen-plus',
       messages: [
         {
           role: 'system',
