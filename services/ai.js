@@ -2,15 +2,9 @@ const OpenAI = require('openai')
 const zhLocale = require('../locales/zh')
 const enLocale = require('../locales/en')
 
-let openaiConfig = {
-  apiKey: process.env.OPENAI_API_KEY
-}
-
-if (global.isDev) {
-  openaiConfig = {
-    apiKey: process.env.OPENAI_API_KEY_PROXY,
-    baseURL: process.env.OPENAI_BASE_URL_PROXY
-  }
+openaiConfig = {
+  apiKey: process.env.OPENAI_API_KEY_PROXY,
+  baseURL: process.env.OPENAI_BASE_URL_PROXY
 }
 
 const openai = new OpenAI(openaiConfig)

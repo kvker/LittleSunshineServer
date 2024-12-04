@@ -7,6 +7,7 @@ router.post('/onIapVerifyReceipt', async (req, res) => {
   const { username, orderId, transactionReceipt } = req.body
   console.log({ username, orderId, transactionReceiptLength: transactionReceipt?.length })
 
+  let message = ''
   let q = new AV.Query('_User')
   q.equalTo('username', username)
   const userLcObject = await q.first()
@@ -36,6 +37,8 @@ router.post('/onIapVerifyReceipt', async (req, res) => {
     let receipt = verifyData.receipt
     console.log(JSON.stringify(verifyData, null, 2))
     console.log('上面是线上检测结果')
+    message += JSON.stringify(verifyData)
+    message += '线上'
     if (status === 21007) {
       console.log('线上检测失败返回21007，尝试沙盒环境')
       // 调用的是沙盒环境，沙盒再查一遍
@@ -58,6 +61,8 @@ router.post('/onIapVerifyReceipt', async (req, res) => {
       receipt = verifyData.receipt
       console.log(JSON.stringify(verifyData, null, 2))
       console.log('上面是沙盒检测结果')
+      message += JSON.stringify(verifyData)
+      message += '沙盒'
     }
     if (!receipt.in_app.length) {
       console.log('订单不存在。')
@@ -81,7 +86,9 @@ router.post('/onIapVerifyReceipt', async (req, res) => {
   }
 
   console.log('交易完成')
-  res.json({ success: !status })
+  res.json({
+    data: { success: !status, message }
+  })
 })
 
 const iapMap = {
