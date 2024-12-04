@@ -1,9 +1,10 @@
 const jwt = require('jsonwebtoken')
+const fs = require('fs')
 
 // 设置参数
 const api_key = process.env.APPLE_IAP_API_KEY
 const issuerID = process.env.APPLE_IAP_ISSUER_ID
-const private_key = process.env.APPLE_IAP_PRIVATE_KEY
+const private_key = fs.readFileSync('services/private.key', 'utf8')
 const appid = process.env.APPLE_IAP_APP_ID
 
 let iap = {
