@@ -12,6 +12,16 @@ router.use('/*', (req, res, next) => {
   next()
 })
 
+router.get('/', (req, res) => {
+  res.send('Hello World')
+})
+
+router.get('/ping', (req, res) => {
+  res.json({
+    data: 'success'
+  })
+})
+
 router.use('/post', postRoutes)
 router.use('/comment', commentRoutes)
 router.use('/pay', payRoutes)
