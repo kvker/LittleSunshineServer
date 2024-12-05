@@ -1,6 +1,4 @@
 const OpenAI = require('openai')
-const zhLocale = require('../locales/zh')
-const enLocale = require('../locales/en')
 
 const openaiConfig = {
   apiKey: process.env.TONGYI_API_KEY,
@@ -32,21 +30,10 @@ const openai = new OpenAI(openaiConfig)
  * }
  */
 
-exports.onCheckContent = async function onCheckContent(content, locale = 'zh') {
-  // 获取对应的语言配置
-  const locales = {
-    zh: zhLocale,
-    en: enLocale
-  }
-
+exports.onCheckContent = async function onCheckContent(content) {
   // 根据语言获取对应的提示语
-  const getSystemPrompt = (locale) => {
+  const getSystemPrompt = () => {
     return '你是一个内容审核助手，专门判断内容是否积极向上。如果内容积极向上，返回 true，否则返回 false。'
-
-    if (locale === 'zh') {
-      return '你是一个内容审核助手，专门判断内容是否积极向上。如果内容积极向上，返回 true，否则返回 false。'
-    }
-    return 'You are a content moderation assistant. Your task is to determine if the content is positive and constructive. Return true for positive content, false otherwise.'
   }
 
   // 获取错误信息
@@ -65,8 +52,7 @@ exports.onCheckContent = async function onCheckContent(content, locale = 'zh') {
         },
         {
           role: 'user',
-          content:
-            locale === 'zh' ? `请判断以下内容是否积极向上：${content}` : `Please determine if the following content is positive: ${content}`
+          content: `请判断以下内容是否积极向上：${content}`
         }
       ],
       tools: [
@@ -74,17 +60,17 @@ exports.onCheckContent = async function onCheckContent(content, locale = 'zh') {
           type: 'function',
           function: {
             name: 'onCheckPositiveContent',
-            description: locale === 'zh' ? '判断内容是否积极向上' : 'Determine if the content is positive and constructive',
+            description: '判断内容是否积极向上',
             parameters: {
               type: 'object',
               properties: {
                 isPositive: {
                   type: 'boolean',
-                  description: locale === 'zh' ? '内容是否积极向上' : 'Whether the content is positive'
+                  description: '内容是否积极向上'
                 },
                 reason: {
                   type: 'string',
-                  description: locale === 'zh' ? '判断理由' : 'Reason for the judgment'
+                  description: '判断理由'
                 }
               },
               required: ['isPositive', 'reason']
@@ -104,7 +90,7 @@ exports.onCheckContent = async function onCheckContent(content, locale = 'zh') {
 
     return result
   } catch (error) {
-    console.error(locale === 'zh' ? '内容审核失败:' : 'Content check failed:', error)
+    console.error('内容审核失败', error)
     throw error
   }
 }

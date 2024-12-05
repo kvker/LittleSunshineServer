@@ -1,6 +1,10 @@
 {
-  "watch": ["."],
+  "watch": [
+    "."
+  ],
   "ext": ".js,.json",
-  "ignore": ["node_modules/*", "dist/*"],
-  "exec": "ts-node ./app.js"
+  "ignore": [
+    "node_modules/*",
+    "dist/*"
+  ]
 }

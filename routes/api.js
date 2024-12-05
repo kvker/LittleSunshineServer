@@ -1,7 +1,6 @@
 const { Router } = require('express')
 const postRoutes = require('./api/post')
 const commentRoutes = require('./api/comment')
-const payRoutes = require('./api/pay')
 const appleRoutes = require('./api/apple')
 
 const router = Router()
@@ -24,6 +23,5 @@ router.get('/ping', (req, res) => {
 
 router.use('/post', postRoutes)
 router.use('/comment', commentRoutes)
-router.use('/pay', payRoutes)
 router.use('/apple', appleRoutes)
 module.exports = router

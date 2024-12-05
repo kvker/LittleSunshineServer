@@ -26,7 +26,6 @@
 
 ## 项目结构
 
-- locals，多语言，目前限制为中文和英文，运行目前只使用en
 - public，静态资源
 - routes，路由
 - services，服务

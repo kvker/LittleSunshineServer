@@ -28,7 +28,6 @@ Perfect for frontend developers transitioning to full-stack development and gett
 
 ## Project Structure
 
-- locals: Internationalization, currently supports Chinese and English (only English in use)
 - public: Static assets
 - routes: Route handlers
 - services: Service layer

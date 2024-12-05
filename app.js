@@ -4,16 +4,8 @@ global.isDev = process.env.NODE_ENV === 'development'
 
 require('dotenv').config()
 const express = require('express')
-const path = require('path')
 const AV = require('leanengine')
 const routes = require('./routes')
-const en = require('./locales/en')
-const zh = require('./locales/zh')
-
-global.i18n = {
-  en,
-  zh
-}
 
 // 初始化 LeanCloud
 if (global.isDev) {
@@ -40,9 +32,6 @@ const app = express()
 const PORT = process.env.PORT || 13000
 
 // 中间件设置
-app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, 'views'))
-app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
 app.use(AV.express())
 
